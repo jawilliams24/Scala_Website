@@ -8,7 +8,7 @@ import play.api.mvc._
 class HomeController @Inject()(cc: ControllerComponents, authAction: AuthenticationAction) extends AbstractController(cc) {
 
   def index: Action[AnyContent] = authAction {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index("Get ready."))
   }
 
 }
