@@ -111,7 +111,7 @@ article p img {
 
 article p.lead {
     font-size: 18px;
-    font-size: 1.8rem;
+    /*font-size: 1.8rem;*/
     line-height: 1.5;
 }
 
@@ -392,7 +392,6 @@ section {
 
 body {
     background: #f5f5f5;
-    background: #fff;
     color: #555;
     font: 15px "Helvetica Nueue", sans-serif;
     padding: 0px 0 0px;
@@ -816,7 +815,7 @@ header nav a.download:active {
 footer {
     padding: 40px 0;
     background: #363736;
-    background: #eee;
+    /*background: #eee;*/
     border-top: 1px solid #e5e5e5;
     color: #aaa;
     position: relative;
@@ -840,7 +839,6 @@ footer:after {
 
 footer .links {
     width: 960px;
-    margin: 0 auto;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -879,7 +877,6 @@ footer .links a:hover {
 
 footer .licence {
     width: 960px;
-    margin: 0 auto;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -1012,10 +1009,15 @@ aside a[href^="http"]:after, .doc a[href^="http"]:after {
     margin-left: 5px;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(/assets/images/tunnelview.jpg);
+/*html, body {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background-repeat: no-repeat;*/
+/*    background-size: cover;*/
+/*    background-image: url(/assets/images/tunnelview.jpg);*/
+/*}*/
+
+loginHeaders {
+    font-size: 10rem;
+    color: white;
 }

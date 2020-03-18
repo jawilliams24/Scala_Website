@@ -1,13 +1,16 @@
 @(form: Form[LoginDetails])(implicit messagesProvider: MessagesProvider)
 
 @main("Login") {
-
+<center>
     <div>
+        <h1 class = "loginHeaders" style = "color: black">Please enter your login details below:</h1>
         @helper.form(routes.LoginController.loginSubmit()){
-            @helper.inputText(form("username"), '_label -> "Login", '_showConstraints -> false)
+            @helper.inputText(form("username"), '_label -> "Username", '_showConstraints -> false)
             @helper.inputPassword(form("password"), '_label -> "Password", '_showConstraints -> false)
             <button type="submit">Log In</button>
+            <button type="reset">Clear</button>
         }
     </div>
+</center>
 
 }
