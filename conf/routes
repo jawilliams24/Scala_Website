@@ -5,9 +5,9 @@ GET           /index                       controllers.HomeController.index
 GET           /login                       controllers.LoginController.login
 POST          /login                       controllers.LoginController.loginSubmit
 
-GET           /createperson                controllers.HomeController.create
+GET           /createPerson                controllers.HomeController.create
 
-POST          /submitperson                controllers.ApplicationUsingJsonReadersWriters.create
+POST          /submitPerson                controllers.ApplicationUsingJsonReadersWriters.create
 
 POST          /createFromJson              controllers.ApplicationUsingJsonReadersWriters.createFromJson
 
@@ -17,8 +17,8 @@ GET           /findAll                     controllers.ApplicationUsingJsonReade
 
 GET           /assets/*file                controllers.Assets.at(path="/public", file)
 
-DELETE        /deleteOne                   controllers.ApplicationUsingJsonReadersWriters.deleteOne
+DELETE        /deleteOne/:firstName                   controllers.ApplicationUsingJsonReadersWriters.deleteOne(firstName: String)
 
-GET           /deleteOne                   controllers.ApplicationUsingJsonReadersWriters.deleteOne
+GET           /deleteOne/:firstName        controllers.ApplicationUsingJsonReadersWriters.deleteOne(firstName: String)
 
 GET           /create                      controllers.HomeController.create

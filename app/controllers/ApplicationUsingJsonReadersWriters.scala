@@ -9,16 +9,17 @@ import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMo
 import reactivemongo.api.Cursor
 import reactivemongo.play.json._
 import reactivemongo.play.json.collection.{JSONCollection, _}
-
 import models.JsonFormats._
-import scala.concurrent.{ExecutionContext, Future}
+
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext, Future}
 
 class ApplicationUsingJsonReadersWriters @Inject()(
-components: ControllerComponents,
-val reactiveMongoApi: ReactiveMongoApi,
-val mongoService: MongoService
-) extends AbstractController(components)
-with MongoController with ReactiveMongoComponents with play.api.i18n.I18nSupport {
+                                                    components: ControllerComponents,
+                                                    val reactiveMongoApi: ReactiveMongoApi,
+                                                    val mongoService: MongoService
+                                                  ) extends AbstractController(components)
+  with MongoController with ReactiveMongoComponents with play.api.i18n.I18nSupport {
 
   implicit def ec: ExecutionContext = components.executionContext
 
@@ -34,12 +35,18 @@ with MongoController with ReactiveMongoComponents with play.api.i18n.I18nSupport
 
   def create = Action.async { implicit request: Request[AnyContent] =>
     UserDetails.personList.bindFromRequest.fold({ formWithErrors =>
-      Future{BadRequest(views.html.create(formWithErrors))}
-    }, { userDetails: UserDetails =>
-
-      mongoService.createUserDetails(userDetails).map{
-        _ => Ok("User inserted")
+      Future {
+        BadRequest(views.html.create(formWithErrors))
       }
+    }, { userDetails: UserDetails =>
+      if(UserDetails.checkIfPassIsValid(userDetails)) {
+        mongoService.createUserDetails(userDetails).map {
+          _ => Ok("User inserted")
+        }
+      } else {
+        Future.successful(BadRequest(views.html.create(UserDetails.personList)))
+      }
+
     })
 
   }
@@ -88,7 +95,7 @@ with MongoController with ReactiveMongoComponents with play.api.i18n.I18nSupport
   //    val futureResult =
   //  }
 
-  def deleteOne(): Action[JsValue] = Action.async(parse.json) { request =>
+  def deleteOne(firstName: String): Action[JsValue] = Action.async(parse.json) { request =>
     request.body.validate[UserDetails].map { user =>
       collection.flatMap(c => c.remove(user)).map { _ => Ok("removed")
       }
@@ -102,5 +109,6 @@ with MongoController with ReactiveMongoComponents with play.api.i18n.I18nSupport
         }
       }.getOrElse(Future.successful(BadRequest("invalid Json")))
   }
+
 
 }
