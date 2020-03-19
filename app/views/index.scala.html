@@ -1,20 +1,37 @@
 @(message: String)
 
-    @main("Home") {
-        <center>
-            <h1 style = "color: red">@message</h1>
-            <h2>Hello</h2>
+@main("Home") {
+    <center>
+        <h1 style = "color: white">@message</h1>
+        <h2 style = "color: white">COVID-19</h2>
 
-            <div class = "container-fluid">
-                <div class = "row">
-                    <div class = "col">
-                        <a href="localhost:9000/findAll">
-                            <link ref>
-                            <img src="https://i.stack.imgur.com/5AfbS.png" width="450" height="250">
-                        </a>
-
-                    </div>
+        <div class = "container-fluid">
+            <div class = "row">
+                <div class = "col">
+                    <a href="http://localhost:9000/create">
+                        <link ref>
+                        <img src="/assets/images/tunnelview.jpg" width="450" height="250">
+                    </a>
+                </div>
+                <div class = "col">
+                    <a href="http://localhost:9000/login">
+                        <link ref>
+                        <img src="assets/images/yosemite.jpg" width="450" height="250">
+                    </a>
+                </div>
+                <div class = "col">
+                    <a href="http://localhost:9000/login">
+                        <link ref>
+                        <img src="assets/images/yellowstonegrand.jpg" width="450" height="250">
+                    </a>
                 </div>
             </div>
-        </center>
-    }
+            <div class = "row mt-5" style = "margin-top: 100px">
+            </div>
+            <div class = "col">
+
+            </div>
+
+        </div>
+    </center>
+}

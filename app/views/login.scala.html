@@ -2,14 +2,31 @@
 
 @main("Login") {
 <center>
-    <div>
-        <h1 class = "loginHeaders" style = "color: black">Please enter your login details below:</h1>
-        @helper.form(routes.LoginController.loginSubmit()){
-            @helper.inputText(form("username"), '_label -> "Username", '_showConstraints -> false)
-            @helper.inputPassword(form("password"), '_label -> "Password", '_showConstraints -> false)
-            <button type="submit">Log In</button>
-            <button type="reset">Clear</button>
-        }
+
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Click here to login</button>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Exit</h4>
+                </div>
+                <div class="modal-body">
+                        <h1 class = "loginHeaders" style = "color: white">Please enter your login details below:</h1>
+                        @helper.form(routes.LoginController.loginSubmit()){
+                            @helper.inputText(form("username"), '_label -> "Username", '_showConstraints -> false)
+                            @helper.inputPassword(form("password"), '_label -> "Password", '_showConstraints -> false)
+                            <button type="submit">Log In</button>
+                            <button type="reset">Clear</button>
+                        }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 </center>
 

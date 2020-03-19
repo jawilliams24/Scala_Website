@@ -1,0 +1,40 @@
+@(form: Form[UserDetails])(implicit messagesProvider: MessagesProvider)
+
+@main("Create") {
+    <head>
+        <meta charset="UTF-8">
+        <title>Create</title>
+    </head>
+    <body>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+            Click here to create a new user</button>
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Exit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h1 class = "loginHeaders" style = "color: white">Please enter your details below:</h1>
+                        @helper.form(routes.ApplicationUsingJsonReadersWriters.create()) {
+                            @helper.inputText(form("firstName"), '_label -> "First Name", '_showConstraints -> false)
+                            @helper.inputText(form("lastName"), '_label -> "Last Name", '_showConstraints -> false)
+                            @helper.inputText(form("username"), '_label -> "username", '_showConstraints -> false)
+                            @helper.inputPassword(form("password"), '_label -> "Password", '_showConstraints -> false)
+                            @helper.inputPassword(form("confirmedPassword"), '_label -> "Confirm Password", '_showConstraints -> false)
+                            <button type="submit">Register</button>
+                            <button type="reset">Clear</button>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+    </html>
+}
