@@ -1009,15 +1009,16 @@ aside a[href^="http"]:after, .doc a[href^="http"]:after {
     margin-left: 5px;
 }
 
-/*html, body {*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    background-repeat: no-repeat;*/
-/*    background-size: cover;*/
-/*    background-image: url(/assets/images/tunnelview.jpg);*/
-/*}*/
+html, body {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(/assets/images/covid19.jpg);
+}
 
 loginHeaders {
     font-size: 10rem;
     color: white;
 }
+

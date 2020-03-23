@@ -2,19 +2,48 @@
 
     @main("Home") {
         <center>
-            <h1 style = "color: red">@message</h1>
-            <h2>Hello</h2>
+            <h1 style = "color: white">@message</h1>
+            <h2 style = "color: white">COVID-19</h2>
 
             <div class = "container-fluid">
                 <div class = "row">
                     <div class = "col">
-                        <a href="localhost:9000/findAll">
+                        <a href="http://localhost:9000/create">
                             <link ref>
-                            <img src="https://i.stack.imgur.com/5AfbS.png" width="450" height="250">
+                            <button type="button" class="btn btn-danger">Create a user</button>
                         </a>
-
+                    </div>
+                    <div class = "col">
+                        <a href="http://localhost:9000/findAll">
+                            <link ref>
+                            <button type="button" class="btn btn-danger">View all users</button>
+                        </a>
+                    </div>
+                    <div class = "col">
+                        <a href="http://localhost:9000/deletePerson/John">
+                            <link ref>
+                            <button type="button" class="btn btn-danger">Delete a user</button>
+                        </a>
                     </div>
                 </div>
             </div>
+            <div class = "row mt-5" style = "margin-top: 100px">
+            </div>
+            <div class = "row">
+                <div class = "col">
+                    <a href="http://localhost:9000/update">
+                        <link ref>
+                        <button type="button" class="btn btn-danger">Update a user</button>
+                    </a>
+                </div>
+                <div class = "col">
+                    <a href="http://localhost:9000/findByName/Smith">
+                        <link ref>
+                        <button type="button" class="btn btn-danger">View one user</button>
+                    </a>
+                </div>
+            </div>
+
+
         </center>
     }

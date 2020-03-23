@@ -22,4 +22,6 @@ class LoginController @Inject()(cc: ControllerComponents) extends AbstractContro
     })
   }
 
+
+
 }
