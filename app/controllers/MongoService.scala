@@ -1,19 +1,18 @@
 package controllers
 
 import javax.inject.Inject
-import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents, Request}
 import reactivemongo.play.json.collection.JSONCollection
-
 import scala.concurrent.{ExecutionContext, Future}
 import reactivemongo.play.json._
 import collection._
-import models.{User, UserDetails}
 import models.JsonFormats._
-import play.api.libs.json.{JsValue, Json}
+import models.{User, UserDetails}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import reactivemongo.api.Cursor
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
-import reactivemongo.api.commands.WriteResult
-
+import reactivemongo.api.commands.{UpdateWriteResult, WriteResult}
+import reactivemongo.bson.BSONObjectID
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class MongoService @Inject()(
@@ -61,6 +60,41 @@ class MongoService @Inject()(
 //    }
 //  }
 
+
+  def create(user: UserDetails): Future[WriteResult] = {
+    collection.flatMap(_.insert.one(user))
+  }
+
+  def deleteUser(firstName: String): Future[WriteResult] = {
+    collection.flatMap(_.delete.one(
+      Json.obj(
+        {
+          "firstName" -> firstName
+        }
+      )))
+  }
+
+  def getPerson(filter: JsObject): Future[List[Any]] = {
+    val cursor: Future[Cursor[UserDetails]] = collection.map {
+      _.find(filter)
+        .cursor[UserDetails]()
+    }
+    cursor.flatMap(
+      _.collect[List](
+        -1,
+        Cursor.FailOnError[List[UserDetails]]()
+      ))
+  }
+
+  def updateUser(id: String, user: UserDetails): Future[UpdateWriteResult] = {
+    collection.flatMap(_.update(false).one(
+      Json.obj(
+        {
+          "_id" -> BSONObjectID.parse(id).get
+        }
+      ), user
+    ))
+  }
 
 
 }

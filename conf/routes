@@ -1,25 +1,29 @@
-GET           /                            controllers.LoginController.login
+GET         /                               controllers.LoginController.login
 
-GET           /index                       controllers.HomeController.index
+GET         /index                          controllers.HomeController.index
 
-GET           /login                       controllers.LoginController.login
+GET         /login                          controllers.LoginController.login
 
-POST          /login                       controllers.LoginController.loginSubmit
+POST        /login                          controllers.LoginController.loginSubmit
 
-GET           /createPerson                controllers.HomeController.create
+GET         /createPerson                   controllers.HomeController.create
 
-POST          /submitPerson                controllers.ApplicationUsingJsonReadersWriters.create
+POST        /submitPerson                   controllers.ApplicationUsingJsonReadersWriters.create
 
-POST          /createFromJson              controllers.ApplicationUsingJsonReadersWriters.createFromJson
+POST        /createFromJson                 controllers.ApplicationUsingJsonReadersWriters.createFromJson
 
-GET           /findByName/:lastName        controllers.ApplicationUsingJsonReadersWriters.findByName(lastName: String)
+GET         /findByName/:lastName           controllers.ApplicationUsingJsonReadersWriters.findByName(lastName: String)
 
-GET           /findAll                     controllers.ApplicationUsingJsonReadersWriters.findAll
+GET         /findAll                        controllers.ApplicationUsingJsonReadersWriters.findAll
 
-GET           /assets/*file                controllers.Assets.at(path="/public", file)
+GET         /assets/*file                   controllers.Assets.at(path="/public", file)
 
-DELETE        /deleteOne/:firstName        controllers.ApplicationUsingJsonReadersWriters.deleteOne(firstName: String)
+#DELETE        /deleteOne/:firstName        controllers.ApplicationUsingJsonReadersWriters.deleteOne(firstName: String)
 
-GET           /deleteOne/:firstName        controllers.ApplicationUsingJsonReadersWriters.deleteOne(firstName: String)
+GET         /deletePerson/:firstName        controllers.ApplicationUsingJsonReadersWriters.deletePerson(firstName: String)
 
-GET           /create                      controllers.HomeController.create
+GET         /create                         controllers.HomeController.create
+
+POST        /update/:username               controllers.ApplicationUsingJsonReadersWriters.updateUser(username)
+
+GET         /findOne/:lastName              controllers.ApplicationUsingJsonReadersWriters.findByName(lastName)

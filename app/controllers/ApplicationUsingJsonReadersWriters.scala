@@ -10,7 +10,6 @@ import reactivemongo.api.Cursor
 import reactivemongo.play.json._
 import reactivemongo.play.json.collection.{JSONCollection, _}
 import models.JsonFormats._
-
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 
@@ -25,6 +24,7 @@ class ApplicationUsingJsonReadersWriters @Inject()(
 
   def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("persons"))
 
+  var personList: List[UserDetails] = List()
 
   def createFromJson: Action[JsValue] = Action.async(parse.json) { request =>
     request.body.validate[UserDetails].map { user =>
@@ -33,23 +33,7 @@ class ApplicationUsingJsonReadersWriters @Inject()(
     }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
-  def create = Action.async { implicit request: Request[AnyContent] =>
-    UserDetails.personList.bindFromRequest.fold({ formWithErrors =>
-      Future {
-        BadRequest(views.html.create(formWithErrors))
-      }
-    }, { userDetails: UserDetails =>
-      if(UserDetails.checkIfPassIsValid(userDetails)) {
-        mongoService.createUserDetails(userDetails).map {
-          _ => Ok("User inserted")
-        }
-      } else {
-        Future.successful(BadRequest(views.html.create(UserDetails.personList)))
-      }
 
-    })
-
-  }
 
   def findByName(lastName: String): Action[AnyContent] = Action.async {
     val cursor: Future[Cursor[User]] = collection.map {
@@ -90,22 +74,73 @@ class ApplicationUsingJsonReadersWriters @Inject()(
   }
 
 
-  //  def updateUser(firstName: String): Action[AnyContent] = Action.async {
-  //val user =
-  //    val futureResult =
-  //  }
+//  def updateUser(id: String): Any = Action.async { implicit request: Request[AnyContent] =>
+//    UserDetails.personList.bindFromRequest.fold({ formWithErrors =>
+//      Future.successful(BadRequest(views.html.index(personList, id, formWithErrors)))
+//    }, { thing =>
+//      mongoService.updateUser(id, user).map(_ => {
+//        Await.result(create, Duration.Inf)
+//        Ok(views.html.index(Thing.createThingForm, personList))
+//
+//      })
+//    })
+//  }
 
-  def deleteOne(firstName: String): Action[JsValue] = Action.async(parse.json) { request =>
-    request.body.validate[UserDetails].map { user =>
-      collection.flatMap(c => c.remove(user)).map { _ => Ok("removed")
+  def makePerson: Future[Unit] = {
+    val cursor: Future[Cursor[UserDetails]] = collection.map { el =>
+      el.find(Json.obj())
+        .cursor[UserDetails]()
+    }
+
+    cursor.flatMap(el => {
+      println(el + " is here!")
+      el.collect[List](
+        -1,
+        Cursor.FailOnError[List[UserDetails]]()
+      )
+    })
+      .map { users =>
+        println("I am a person already!")
+        personList = users
       }
-    }.getOrElse(Future.successful(BadRequest("invalid Json")))
   }
 
-  def updateNoteFromJson(message: String): Action[JsValue] = Action.async(parse.json) {
+  def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    UserDetails.personList.bindFromRequest.fold({ formWithErrors =>
+      Future {
+        BadRequest(views.html.create(formWithErrors))
+      }
+    }, { userDetails: UserDetails =>
+      if(UserDetails.checkIfPassIsValid(userDetails)) {
+        mongoService.createUserDetails(userDetails).map {
+          _ => Ok("User inserted")
+        }
+      } else {
+        Future.successful(BadRequest(views.html.create(UserDetails.personList)))
+      }
+
+    })
+
+  }
+
+//  def deleteOne(firstName: String): Action[JsValue] = Action.async(parse.json) { request =>
+//    request.body.validate[UserDetails].map { user =>
+//      collection.flatMap(c => c.remove(user)).map { _ => Ok("removed")
+//      }
+//    }.getOrElse(Future.successful(BadRequest("invalid Json")))
+//  }
+
+  def deletePerson(firstName: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    mongoService.deleteUser(firstName).map(_ => {
+      Await.result(makePerson, Duration.Inf)
+      Ok(views.html.index(UserDetails.personList.toString))
+    })
+  }
+
+  def updateUser(username: String): Action[JsValue] = Action.async(parse.json) {
     request =>
       request.body.validate[UserDetails].map { user =>
-        collection.flatMap(c => c.update.one(user, Json.obj("firstName" -> user.firstName, "message" -> message), upsert = false)).map { _ => Ok("updated")
+        collection.flatMap(c => c.update.one(user, Json.obj("firstName" -> user.firstName, "username" -> username), upsert = false)).map { _ => Ok("updated")
         }
       }.getOrElse(Future.successful(BadRequest("invalid Json")))
   }
